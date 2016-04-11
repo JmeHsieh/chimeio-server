@@ -1,0 +1,13 @@
+{
+  "host": "localhost",
+  "port": 3030,
+  "mongodb": "mongodb://localhost:27017/chimeioDev",
+  "public": "../public/",
+  "auth": {
+    "idField": "id",
+    "token": {
+      "secret": "OQ8gQihSyeDWv/S32xkBBd2/jmqikp2N8CBkGuWKeQ/bsKPskN7f27Xc00BUmFSmTV9Fs6Lr3GZDlQfY1hC7Aw=="
+    },
+    "local": {}
+  }
+}
