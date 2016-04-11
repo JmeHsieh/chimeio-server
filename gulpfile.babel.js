@@ -1,10 +1,12 @@
 'use strict'
 
+const babel = require('gulp-babel');
+const cache = require('gulp-cached');
+const exec = require('child_process').exec;
 const gulp = require('gulp');
 const nodemon = require('gulp-nodemon');
-const babel = require('gulp-babel');
 const sourcemaps = require('gulp-sourcemaps');
-const cache = require('gulp-cached');
+
 
 gulp.task('compile', () => {
   let stream = gulp.src('src/**/*.js')
@@ -17,16 +19,17 @@ gulp.task('compile', () => {
 });
 
 gulp.task('watch', ['compile'], () => {
-  let stream = nodemon({script: 'dist/', watch: 'src', tasks: ['compile']}).on('restart', () => {
-    console.log('restarted');
-  });
+  let stream = nodemon({script: 'dist/', watch: 'src', tasks: ['compile']})
+                .on('restart', () => {
+                  console.log('restarted');
+                });
   return stream;
 });
 
-// gulp.task('default', () =>
-//     gulp.src('src/**/*.js')
-//         .pipe(sourcemaps.init())
-//         .pipe(babel())
-//         .pipe(sourcemaps.write('.'))
-//         .pipe(gulp.dest('dist'))
-// );
+gulp.task('node', ['compile'], (cb) => {
+  exec('node dist/', (err, stdout, stderr) => {
+    console.log(stdout);
+    console.log(stderr);
+    cb(err);
+  });
+});
