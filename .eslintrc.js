@@ -33,7 +33,7 @@ module.exports = {
             "always"
         ],
         "brace-style": [
-            2,
+            0,
             "stroustrup",
             {
                 "allowSingleLine": true
@@ -155,7 +155,7 @@ module.exports = {
         "no-new-wrappers": 2,
         "no-octal-escape": 2,
         "no-param-reassign": [
-            2,
+            0,
             {
                 "props": false
             }
@@ -180,9 +180,9 @@ module.exports = {
         "no-ternary": 0,
         "no-throw-literal": 2,
         "no-trailing-spaces": 0,
-        "no-undef-init": 2,
+        "no-undef-init": 1,
         "no-undefined": 0,
-        "no-underscore-dangle": 2,
+        "no-underscore-dangle": 0,
         "no-unmodified-loop-condition": 2,
         "no-unneeded-ternary": 2,
         "no-unreachable": 1,
