@@ -23,10 +23,10 @@ const messageSchema = new Schema({
   updatedAt: { type: Date, 'default': Date.now },
 
   // relationships
-  application: { type: Schema.Types.ObjectId, ref: 'application', require: true },
-  room: { type: Schema.Types.ObjectId, ref: 'room', require: true },
-  user: { type: Schema.Types.ObjectId, ref: 'user', require: true },
-  
+  application: { type: Schema.Types.ObjectId, ref: 'application', required: true },
+  room: { type: Schema.Types.ObjectId, ref: 'room', required: true },
+  user: { type: Schema.Types.ObjectId, ref: 'user', required: true },
+
 });
 
 const messageModel = mongoose.model('message', messageSchema);
