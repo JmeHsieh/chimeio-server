@@ -27,16 +27,18 @@ module.exports = function() {
   roomService.filter({
     created(data, connection) {
       const userIdField = '_id';
+      const userId = connection.user[userIdField];
 
       // filter out unauthenticated socket
-      let userId = connection.user[userIdField];
       if (!userId) { return false; }
 
       // filter room creater him/her-self
       if (userId.toString() === data.user.toString()) { return false; }
 
       // filter out non-room-member socket
-      return data.users.indexOf(userId) !== -1;
+      if (data.users.indexOf(userId) === -1) { return false; }
+
+      return data;
     },
     updated() { return false; },
     patched() { return false; },
