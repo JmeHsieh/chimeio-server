@@ -1,6 +1,9 @@
 # Mac
 **/.DS_Store
 
+# Visual Studio Code
+.vscode
+
 # Babel
 dist/
 
