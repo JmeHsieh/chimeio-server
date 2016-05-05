@@ -286,20 +286,21 @@ exports.restrictToRoomMember = function(hook) {
   console.log('restrictToRoomMember');
   const currentUserIdField = '_id';
   const roomIdField = 'room';
+  const _this = this;
 
   if (hook.type !== 'before') {
-    throw new Error(`The 'restrictToRoomMembers' hook should only be used as a 'before' hook.`);
+    throw new Error(`The 'restrictToRoomMember' hook should only be used as a 'before' hook.`);
   }
 
   if (!hook.params.provider) { return Promise.resolve(hook); }
 
   let roomId = '';
-  if (hook.method === 'create') {
+  if (_this.Model.modelName === 'message' && (hook.method === 'create' || hook.method === 'find')) {
     roomId = hook.params.query[roomIdField];
-  } else if (hook.method === 'get') {
+  } else if (_this.Model.modelName === 'room' && hook.method === 'get') {
     roomId = hook.id;
   } else {
-    throw new Error(`The 'restrictToRoomMember' hook should only be used on the 'get' or 'create' service methods.`);
+    throw new Error(`The 'restrictToRoomMember' hook should only be used on certain services or methods.`);
   }
 
   return new Promise((resolve, reject) => {
