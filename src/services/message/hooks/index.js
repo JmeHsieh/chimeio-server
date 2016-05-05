@@ -13,7 +13,7 @@ exports.before = {
     auth.restrictToAuthenticated()
   ],
   find: [
-    auth.queryWithCurrentUser({as: 'user'}),
+    globalHooks.restrictToRoomMember,
     globalHooks.restrictToUndeleted
   ],
   get: [
