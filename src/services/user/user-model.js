@@ -11,7 +11,7 @@ const Schema = mongoose.Schema;
 const userSchema = new Schema({
 
   // attributes
-  username: { type: String, required: true, unique: true },
+  username: { type: String, required: true },
   email: { type: String, required: true, unique: true },
   password: { type: String, required: true, minLength: 8 },
   createdAt: { type: Date, 'default': Date.now },
