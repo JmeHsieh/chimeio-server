@@ -13,7 +13,7 @@ exports.before = {
     // auth.restrictToAuthenticated()
   ],
   get: [
-    hooks.disable('external')
+    // hooks.disable('external')
     // auth.verifyToken(),
     // auth.populateUser(),
     // auth.restrictToAuthenticated(),

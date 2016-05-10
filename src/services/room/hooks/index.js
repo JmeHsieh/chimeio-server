@@ -28,7 +28,7 @@ exports.before = {
 
 exports.after = {
   all: [hooks.remove('application')],
-  find: [],
+  find: [hooks.populate('users', {service: 'users'})],
   get: [],
   create: [],
   update: [],
