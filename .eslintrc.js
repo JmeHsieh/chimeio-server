@@ -12,10 +12,6 @@ module.exports = {
             "never"
         ],
         "array-callback-return": 2,
-        "arrow-body-style": [
-            2,
-            "as-needed"
-        ],
         "arrow-parens": [
             2,
             "always"
@@ -87,7 +83,6 @@ module.exports = {
         "guard-for-in": 2,
         "handle-callback-err": 2,
         "id-blacklist": 2,
-        "id-length": 2,
         "id-match": 2,
         "indent": 0,
         "init-declarations": 2,
