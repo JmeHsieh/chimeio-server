@@ -30,7 +30,10 @@ exports.after = {
   all: [hooks.remove('application')],
   find: [hooks.populate('users', {service: 'users'})],
   get: [],
-  create: [],
+  create: [
+    globalHooks.autoJoinMemberWithEmails,
+    hooks.populate('users', {service: 'users'})
+  ],
   update: [],
   patch: [],
   remove: []

@@ -395,6 +395,38 @@ exports.restrictToRoomAction = function(hook) {
   throw new errors.BadRequest('room action not supported.');
 }
 
+exports.autoJoinMemberWithEmails = function(hook) {
+  if (hook.type !== 'after') {
+    throw new Error(`The 'autoJoinMemberWithEmails' hook should only be used as s 'after' hook.`);
+  }
+
+  if (hook.method !== 'create') {
+    throw new Error(`The 'autoJoinMemberWithEmails' hook should only be used on 'create' service method.`);
+  }
+
+  return new Promise((resolve, reject) => {
+    const room = hook.result;
+    const emails = hook.params.query.receiverEmails;
+
+    if (emails && emails.length > 0) {
+      const query = {query: {email: emails}}
+
+      hook.app.service('users').find(query).then((result) => {
+        if (result.total > 0) {
+          const newMembers = room.users.concat(result.data.map((u) => u._id));
+          const members = [...new Set(newMembers)];
+          hook.app.service('rooms').patch(room._id, {users: members}).then((data) => {
+            hook.result = data
+            resolve(hook)
+          })
+        }
+      }).catch(reject)
+    } else {
+      resolve(hook)
+    }
+  })
+}
+
 
 // Message
 // ================================================================== //
