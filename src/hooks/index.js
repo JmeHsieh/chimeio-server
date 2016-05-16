@@ -396,8 +396,10 @@ exports.restrictToRoomAction = function(hook) {
 }
 
 exports.autoJoinMemberWithEmails = function(hook) {
+  console.log('autoJoinMemberWithEmails')
+
   if (hook.type !== 'after') {
-    throw new Error(`The 'autoJoinMemberWithEmails' hook should only be used as s 'after' hook.`);
+    throw new Error(`The 'autoJoinMemberWithEmails' hook should only be used as an 'after' hook.`);
   }
 
   if (hook.method !== 'create') {
@@ -406,23 +408,25 @@ exports.autoJoinMemberWithEmails = function(hook) {
 
   return new Promise((resolve, reject) => {
     const room = hook.result;
-    const emails = hook.params.query.receiverEmails;
+    let emails = hook.params.query.receiverEmails;
+    if (emails && emails.length > 0 && emails.indexOf(hook.params.user.email) !== -1) {
+      emails.splice(emails.indexOf(hook.params.user.email), 1);
+    }
 
     if (emails && emails.length > 0) {
-      const query = {query: {email: emails}}
-
+      const query = {query: {email: {$in: emails}}};
       hook.app.service('users').find(query).then((result) => {
         if (result.total > 0) {
           const newMembers = room.users.concat(result.data.map((u) => u._id));
           const members = [...new Set(newMembers)];
           hook.app.service('rooms').patch(room._id, {users: members}).then((data) => {
-            hook.result = data
-            resolve(hook)
+            hook.result = data;
+            resolve(hook);
           })
         }
-      }).catch(reject)
+      }).catch(reject);
     } else {
-      resolve(hook)
+      resolve(hook);
     }
   })
 }
