@@ -35,7 +35,9 @@ module.exports = function() {
     if (!userId) { return false; }
 
     // filter out message sender him/her-self
-    if (userId.toString() === data.user.toString()) { return false; }
+    if (userId.toString() === data.user[userIdField].toString()) {
+      return false;
+    }
 
     // filter out non-room-member socket
     const roomId = data.room;

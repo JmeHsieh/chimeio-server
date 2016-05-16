@@ -35,7 +35,9 @@ exports.before = {
 };
 
 exports.after = {
-  all: [hooks.remove('deleted', 'application')],
+  all: [
+    hooks.remove('deleted', 'application'),
+    hooks.populate('user', {service: 'users'})],
   find: [],
   get: [],
   create: [],
