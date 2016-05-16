@@ -395,6 +395,41 @@ exports.restrictToRoomAction = function(hook) {
   throw new errors.BadRequest('room action not supported.');
 }
 
+exports.restrictToUniqueRoom = function(hook) {
+  console.log('restrictToUniqueRoom')
+
+  if (hook.type !== 'before') {
+    throw new Error(`The 'restrictToUniqueRoom' hook should by used as a 'before' hook.`);
+  }
+
+  if (hook.method !== 'create') {
+    throw new Error(`The 'restrictToUniqueRoom' hook should only be used on 'create' service method.`);
+  }
+
+  const currentUserEmail = hook.params.user.email
+  if (!currentUserEmail) {
+    throw new Error(`Current user email not exists.`)
+  }
+
+  return new Promise((resolve, reject) => {
+    let emails = hook.params.query.receiverEmails;
+    emails = emails ? emails.concat(hook.params.user.email) : [currentUserEmail];
+    emails = [...new Set(emails)];
+
+    const usersQuery = {query: {email: {$in: emails}}};
+    hook.app.service('users').find(usersQuery).then((resultUsers) => {
+      const members = resultUsers.data.map((u) => u._id);
+      const roomsQuery = {query: {users: {$eq: members}}};
+      hook.app.service('rooms').find(roomsQuery).then((resultRooms) => {
+        if (resultRooms.total > 0) {
+          hook.result = resultRooms.data[0];
+        }
+        resolve(hook);
+      }).catch(reject);
+    }).catch(reject);
+  })
+}
+
 exports.autoJoinMemberWithEmails = function(hook) {
   console.log('autoJoinMemberWithEmails')
 

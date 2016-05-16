@@ -16,7 +16,8 @@ exports.before = {
   get: [globalHooks.restrictToRoomMember],
   create: [
       globalHooks.associateCurrentApplication,
-      globalHooks.associateCurrentUserAsMember
+      globalHooks.associateCurrentUserAsMember,
+      globalHooks.restrictToUniqueRoom,
   ],
   update: [hooks.disable('external')],
   patch: [
