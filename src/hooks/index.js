@@ -14,8 +14,8 @@ exports.authenticateDeveloper = function(hook) {
   }
 
   if (!hook.params.provider) { return Promise.resolve(hook); }
-
-  const token = hook.params.query.token;
+  
+  const token = hook.params.token;
   if (!token) { throw new errors.BadRequest('Require token.'); }
 
   return new Promise((resolve, reject) => {
